@@ -1,0 +1,40 @@
+// This #include statement was automatically added by the Particle IDE.
+#include <HC-SR04.h>
+
+// Sensor gateway using the Argon board. This contains the HC-SR04
+// Ultrasonic code and sends data to the other nodes to notify of a trip
+
+double cm = 0.0;
+bool beam_status = false;
+
+int trigPin = D4;
+int echoPin = D5;
+
+HC_SR04 rangefinder = HC_SR04(trigPin, echoPin);
+
+void setup() 
+{
+    Spark.variable("cm", &cm, DOUBLE);
+    pinMode(trigPin, OUTPUT);
+    pinMode(echoPin, INPUT);
+}
+
+void loop() 
+{
+    cm = rangefinder.distCM();
+    if (cm<50){
+        if (beam_status==false){
+            
+            Particle.publish("MEGR3171_sensorstatus_528","Breach");
+            beam_status = true;   
+        }
+    } else {
+        if (beam_status==false){
+            
+        } else {
+            Particle.publish("MEGR3171_sensorstatus_528","Clear");
+            beam_status = false;
+        }
+    }
+    delay(1000);
+}
