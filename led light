@@ -1,0 +1,24 @@
+int led2 = D6;
+const pin_t led1 = D4; 
+
+void setup() 
+{
+
+  pinMode(led1,OUTPUT);
+  pinMode(led2,OUTPUT);
+  
+  Particle.subscribe("MEGR3171_sensorstatus_528_Clear",greenfunc);
+  Particle.subscribe("MEGR3171_sensorstatus_528_Breach",redfunc);
+  
+}
+  
+  
+    int greenfunc(const char *topic, const char *data){
+    digitalWrite(led2,HIGH);
+    digitalWrite(led1,LOW);
+  }
+    int redfunc(const char *topic, const char *data){
+    digitalWrite(led1,HIGH);
+    digitalWrite(led2,LOW);
+  }
+  
